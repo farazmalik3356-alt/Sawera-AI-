@@ -79,7 +79,7 @@ Agar kaam clear nahi, to chhota sa sawal poochho aur actions khali rakho.
 
         var lastCode = -1
         var lastRaw = ""
-        for (m in models) {
+        for (m in models + models) {
             try {
                 val (code, raw) = call(m, body)
                 lastCode = code; lastRaw = raw
@@ -101,7 +101,7 @@ Agar kaam clear nahi, to chhota sa sawal poochho aur actions khali rakho.
                         Reply(textOut, textOut, emptyList(), emptyList())
                     }
                 }
-                if (code != 404) break   // only retry next model when this one is gone
+                if (code !in listOf(404, 429, 500, 503)) break else Thread.sleep(1500)
             } catch (e: Exception) {
                 lastCode = -1; lastRaw = e.message ?: ""
                 break
